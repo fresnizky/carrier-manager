@@ -24,10 +24,13 @@ const CarrierForm: React.FC = () => {
       variables: { carrier: { code, name, status } },
       context: { apiName: "producer" },
     });
+    setCode("");
+    setName("");
+    setStatus("new");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ display: "flex", gap: "1em" }}>
       <input
         type="text"
         value={code}
@@ -43,7 +46,7 @@ const CarrierForm: React.FC = () => {
       <select value={status} onChange={(e) => setStatus(e.target.value)}>
         <option value="new">New</option>
         <option value="active">Active</option>
-        <option value="ending">Pending</option>
+        <option value="pending">Pending</option>
       </select>
       <button type="submit">Create Carrier</button>
       {loading && <p>Loading...</p>}
