@@ -1,0 +1,23 @@
+name: "carrier-manager"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: carrier-pgdb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USE=postgres
+      - POSTGRES_PASSWORD=my-password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: carrier-kafka
+    ports:
+      - "9092:9092"
+
+volumes:
+  db_data:

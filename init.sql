@@ -1,0 +1,2 @@
+CREATE DATABASE producer;
+CREATE DATABASE consumer;

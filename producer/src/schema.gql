@@ -1,0 +1,23 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CarrierModel {
+  code: String!
+  name: String!
+  status: String!
+}
+
+type Query {
+  carriers: [CarrierModel!]!
+}
+
+type Mutation {
+  createCarrier(carrier: CreateCarrierDTO!): CarrierModel!
+}
+
+input CreateCarrierDTO {
+  code: String!
+  name: String!
+  status: String!
+}
