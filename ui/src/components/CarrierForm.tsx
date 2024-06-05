@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
+import React, { useState } from "react";
 
 import { CREATE_CARRIER } from "../graphql/queries";
 
@@ -31,7 +31,11 @@ const CarrierForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", gap: "1em" }}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: "flex", gap: "1em" }}
+      className="flex gap-4"
+    >
       <input
         type="text"
         value={code}
