@@ -1,10 +1,10 @@
 import React, { ReactNode } from "react";
 import {
-  ApolloProvider as ApolloMultiProvider,
   ApolloClient,
-  InMemoryCache,
-  HttpLink,
   ApolloLink,
+  ApolloProvider as ApolloMultiProvider,
+  HttpLink,
+  InMemoryCache,
 } from "@apollo/client";
 
 const producerLink = new HttpLink({

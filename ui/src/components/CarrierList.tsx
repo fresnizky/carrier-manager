@@ -1,5 +1,6 @@
 import React from "react";
 import { useLazyQuery } from "@apollo/client";
+
 import { GET_CARRIERS } from "../graphql/queries";
 
 interface Carrier {
