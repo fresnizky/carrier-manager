@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 import { CREATE_CARRIER } from "../graphql/queries";
 
@@ -14,10 +15,17 @@ const CarrierForm: React.FC = () => {
   const [name, setName] = useState("");
   const [status, setStatus] = useState("new");
 
-  const [createCarrier, { data, loading, error }] = useMutation<
+  const [createCarrier, { loading }] = useMutation<
     { createCarrier: CreateCarrierDTO },
     { carrier: CreateCarrierDTO }
-  >(CREATE_CARRIER);
+  >(CREATE_CARRIER, {
+    onCompleted: () => {
+      toast.success("Carrier created successfully!");
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,10 +61,9 @@ const CarrierForm: React.FC = () => {
         <option value="active">Active</option>
         <option value="pending">Pending</option>
       </select>
-      <button type="submit">Create Carrier</button>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
-      {data && <p>Carrier created successfully!</p>}
+      <button type="submit" disabled={loading} className="bg-slate-400">
+        Create Carrier
+      </button>
     </form>
   );
 };

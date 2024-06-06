@@ -1,3 +1,6 @@
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "./App.css";
 import CarrierForm from "./components/CarrierForm";
 import CarrierList from "./components/CarrierList";
@@ -13,6 +16,7 @@ function App() {
     >
       <CarrierForm />
       <CarrierList />
+      <ToastContainer />
     </div>
   );
 }
