@@ -8,6 +8,7 @@ import CarrierList from "./components/CarrierList";
 function App() {
   return (
     <div
+      className="flex flex-col items-center py-8"
       style={{
         display: "flex",
         flexDirection: "column",
