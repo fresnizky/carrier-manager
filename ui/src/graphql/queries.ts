@@ -7,6 +7,7 @@ export const GET_CARRIERS = gql`
       code
       name
       status
+      phonenumber
     }
   }
 `;
@@ -17,6 +18,7 @@ export const CREATE_CARRIER = gql`
       code
       name
       status
+      phonenumber
     }
   }
 `;

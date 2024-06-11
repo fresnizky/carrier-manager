@@ -1,10 +1,12 @@
-import { Inject } from '@nestjs/common';
+import { Inject, UseFilters } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlHttpExceptionFilter } from 'src/common/filters/gql-http-exception.filter';
+import { CreateCarrierDTO } from './carrier.dto';
 import { CarrierModel } from './carrier.model';
 import { CarrierService } from './carrier.service';
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { CreateCarrierDTO } from './carrier.dto';
 
 @Resolver((of) => CarrierModel)
+@UseFilters(GqlHttpExceptionFilter)
 export class CarrierResolver {
   constructor(@Inject(CarrierService) private carrierService: CarrierService) {}
 
@@ -18,5 +20,13 @@ export class CarrierResolver {
     @Args('carrier') carrier: CreateCarrierDTO,
   ): Promise<CarrierModel> {
     return await this.carrierService.create(carrier);
+  }
+
+  @Mutation((returns) => CarrierModel)
+  async updateCarrier(
+    @Args('carrierId') carrierId: number,
+    @Args('carrier') carrier: CreateCarrierDTO,
+  ): Promise<CarrierModel> {
+    return await this.carrierService.update(carrierId, carrier);
   }
 }

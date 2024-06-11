@@ -15,4 +15,8 @@ export class CarrierModel {
   @Field()
   @Column('enum', { enum: CarrierCode, default: CarrierCode.NEW })
   status: CarrierCode;
+
+  @Field()
+  @Column('text')
+  phonenumber: string;
 }

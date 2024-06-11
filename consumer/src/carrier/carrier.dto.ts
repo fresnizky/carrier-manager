@@ -11,4 +11,7 @@ export class CreateCarrierDTO {
 
   @Field()
   status: CarrierCode;
+
+  @Field()
+  phonenumber: string;
 }

@@ -19,4 +19,7 @@ export class Carrier {
 
   @Column({ type: 'enum', enum: CarrierCode, default: CarrierCode.NEW })
   status: CarrierCode;
+
+  @Column('varchar', { length: 20 })
+  phonenumber: string;
 }

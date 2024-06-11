@@ -7,6 +7,7 @@ type CarrierModel {
   code: String!
   name: String!
   status: String!
+  phonenumber: String!
 }
 
 type Query {

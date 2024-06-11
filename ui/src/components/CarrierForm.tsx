@@ -16,15 +16,16 @@ interface CreateCarrierDTO {
   code: string;
   name: string;
   status: string;
+  phonenumber: string | undefined;
 }
 
 const CarrierForm: React.FC = () => {
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [status, setStatus] = useState("new");
-  const [phone, setPhone] = useState<Value>();
+  const [phonenumber, setPhonenumber] = useState<Value>();
 
-  const [createCarrier, { loading }] = useMutation<
+  const [createCarrier, { loading, error, data }] = useMutation<
     { createCarrier: CreateCarrierDTO },
     { carrier: CreateCarrierDTO }
   >(CREATE_CARRIER, {
@@ -36,21 +37,22 @@ const CarrierForm: React.FC = () => {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isValidPhoneNumber(phone as Value)) {
+    if (!isValidPhoneNumber(phonenumber as Value)) {
       toast.error("Invalid phone number");
       return;
     }
 
-    createCarrier({
-      variables: { carrier: { code, name, status } },
+    await createCarrier({
+      variables: { carrier: { code, name, status, phonenumber } },
       context: { apiName: "producer" },
     });
     setCode("");
     setName("");
     setStatus("new");
+    setPhonenumber(undefined);
   };
 
   return (
@@ -95,8 +97,8 @@ const CarrierForm: React.FC = () => {
         <div className="content-end pb-1.5 pt-2.5">
           <PhoneInput
             placeholder="Enter phone number"
-            value={phone}
-            onChange={setPhone}
+            value={phonenumber}
+            onChange={setPhonenumber}
             numberInputProps={{
               className:
                 "text-primary-900 placeholder:text-primary-400 block w-[14em] rounded-md border-0 p-0 py-1.5 pl-12 pr-3 sm:text-sm",

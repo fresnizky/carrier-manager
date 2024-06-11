@@ -2,13 +2,13 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CreateCarrierDTO } from './carrier.dto';
-import { Carrier } from './carrier.entity';
-import { Kafka } from 'kafkajs';
 import {
   Admin,
   Producer,
 } from '@nestjs/microservices/external/kafka.interface';
+import { Kafka } from 'kafkajs';
+import { CreateCarrierDTO } from './carrier.dto';
+import { Carrier } from './carrier.entity';
 
 @Injectable()
 export class CarrierService implements OnModuleInit {
@@ -48,5 +48,16 @@ export class CarrierService implements OnModuleInit {
     });
 
     return await this.carrierRepository.save(carrier);
+  }
+
+  async update(carrierId: number, carrier: CreateCarrierDTO): Promise<Carrier> {
+    await this.producer.send({
+      topic: 'carrier',
+      messages: [{ value: JSON.stringify(carrier) }],
+    });
+
+    await this.carrierRepository.update(carrierId, carrier);
+
+    return await this.carrierRepository.findOne({ where: { id: carrierId } });
   }
 }
