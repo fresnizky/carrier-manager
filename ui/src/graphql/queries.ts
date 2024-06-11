@@ -22,3 +22,15 @@ export const CREATE_CARRIER = gql`
     }
   }
 `;
+
+export const UPDATE_CARRIER = gql`
+  mutation UpdateCarrier($carrierId: Float!, $carrier: CreateCarrierDTO!) {
+    updateCarrier(carrierId: $carrierId, carrier: $carrier) {
+      id
+      code
+      name
+      status
+      phonenumber
+    }
+  }
+`;

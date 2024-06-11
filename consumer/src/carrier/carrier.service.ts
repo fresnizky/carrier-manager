@@ -1,11 +1,11 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Carrier } from './carrier.entity';
-import { CreateCarrierDTO } from './carrier.dto';
-import { Kafka } from 'kafkajs';
 import { Consumer } from '@nestjs/microservices/external/kafka.interface';
+import { Kafka } from 'kafkajs';
+import { CreateCarrierDTO } from './carrier.dto';
+import { Carrier } from './carrier.entity';
 
 @Injectable()
 export class CarrierService implements OnModuleInit {
@@ -26,8 +26,17 @@ export class CarrierService implements OnModuleInit {
 
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        const carrier = JSON.parse(message.value.toString());
-        this.carrierRepository.save(carrier);
+        const { carrier, action, carrierId } = JSON.parse(
+          message.value.toString(),
+        );
+        Logger.log(`Received message: ${message.value.toString()}`);
+        if (action === 'create') {
+          this.carrierRepository.save(carrier);
+        }
+
+        if (action === 'update') {
+          this.carrierRepository.update(carrierId, carrier);
+        }
       },
     });
   }

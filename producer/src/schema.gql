@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type CarrierModel {
+  id: Float!
   code: String!
   name: String!
   status: String!

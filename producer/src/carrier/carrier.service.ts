@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -35,6 +35,12 @@ export class CarrierService implements OnModuleInit {
         topics: [{ topic: 'carrier' }],
       });
     }
+
+    if (!topics.includes('update-carrier')) {
+      await this.admin.createTopics({
+        topics: [{ topic: 'update-carrier' }],
+      });
+    }
   }
 
   async findAll(): Promise<Carrier[]> {
@@ -44,16 +50,22 @@ export class CarrierService implements OnModuleInit {
   async create(carrier: CreateCarrierDTO): Promise<Carrier> {
     await this.producer.send({
       topic: 'carrier',
-      messages: [{ value: JSON.stringify(carrier) }],
+      messages: [{ value: JSON.stringify({ carrier, action: 'create' }) }],
     });
 
     return await this.carrierRepository.save(carrier);
   }
 
   async update(carrierId: number, carrier: CreateCarrierDTO): Promise<Carrier> {
+    Logger.log(`Updating carrier with id: ${carrierId}`);
+    Logger.log(
+      `Carrier: ${JSON.stringify({ carrier, carrierId, action: 'update' })}`,
+    );
     await this.producer.send({
       topic: 'carrier',
-      messages: [{ value: JSON.stringify(carrier) }],
+      messages: [
+        { value: JSON.stringify({ carrier, carrierId, action: 'update' }) },
+      ],
     });
 
     await this.carrierRepository.update(carrierId, carrier);
